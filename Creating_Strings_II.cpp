@@ -1,9 +1,10 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
 using vl = vector<ll>;
-const int MOD = 1e9 + 7;
-const int SIZE = 1e6+1;
+
+const ll MOD = 1e9+7;
+const ll SIZE = 1e6+1;
 
 ll fastpow(ll a, ll b)
 {
@@ -23,23 +24,23 @@ ll inverse(ll a)
 
 int main()
 {
-    ll n;
-    cin >> n;
-    vl fact(SIZE + 1), invfact(SIZE + 1);
+    string s;
+    cin>>s;
+    ll n=s.length();
+    map<char,ll> mp;
+    for(ll i=0; i<n; i++)
+        mp[s[i]]++;
+    vl fact(SIZE), invfact(SIZE);
     fact[0] = 1;
     for (ll i = 1; i <= SIZE; i++)
         fact[i] = (i * fact[i - 1]) % MOD;
     invfact[SIZE] = inverse(fact[SIZE]);
     for (ll i = SIZE - 1; i >= 0; i--)
         invfact[i] = (invfact[i + 1] * (i + 1)) % MOD;
-    while (n--)
-    {
-        ll a, b;
-        cin >> a >> b;
-        ll ans = fact[a];
-        ans = (ans * invfact[b]) % MOD;
-        ans = (ans * invfact[a - b]) % MOD;
-        cout << ans << endl;
+    ll ans= fact[n];
+    for(auto it: mp){
+        ans = (ans*invfact[it.second])%MOD;
     }
+    cout<<ans<<endl;
     return 0;
 }
