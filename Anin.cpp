@@ -1,31 +1,58 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
-
-int main()
-{
+const ll M = 1e9 +7;
+// ll solve(ll i, ll j, vector<vector<char>> &grid, vector<vector<ll>> &dp, ll n){
+//     if(i==0 && j==0){
+//         if(grid[0][0]=='*')
+//         return 0;
+//         else
+//         return 1;
+//     }
+//     if(i>=0 && j>=0 && grid[i][j]=='*'){
+//         return 0;
+//     }
+//     if(i<0 || j<0){
+//         return 0;
+//     }
+//     if(dp[i][j]!=-1){
+//         return dp[i][j];
+//     }
+//     ll left = solve(i,j-1,grid,dp,n);
+//     ll up = solve(i-1,j,grid,dp,n);
+//     return dp[n-1][n-1]=left + right;
+// }
+int main() {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    ll n, t;
-    cin >>n >>t;
-    vector<ll>arr(n);
-    for(ll i=0; i<n; i++){
-        cin>>arr[i];
-    }
-    vector<ll>dp((t+1),1e9);
-    dp[0]= 0;
-    for(ll sum=0; sum<=t; sum++){
-    for(ll i=0; i<n; i++){
-        if(sum>=arr[i]){
-            dp[sum]= min(dp[sum],1+dp[sum-arr[i]]);
+    cin.tie(nullptr);
+    ll n;
+    cin>>n;
+    vector<vector<char>>grid(n,vector<char>(n,0));
+    for(ll i=0; i<n;i++){
+        for(ll j=0; j<n; j++){
+            cin>>grid[i][j];
         }
-    }}
-    if(dp[t]==1e9){
-        cout<<-1<<endl;
     }
-    else{
-        cout<<dp[t];
+    vector<vector<ll>>dp(n+1,vector<ll>(n+1,0));
+    if(grid[0][0]!='*'){
+        dp[0][0]=1;
     }
-    
+    for(ll i=0; i<n;i++){
+        for(ll j=0; j<n; j++){
+            if(i == 0 && j == 0) continue;
+          if(grid[i][j]=='*'){
+           dp[i][j]=0;
+           continue;
+          }
+            ll up=0;
+            ll left=0;
+           if(j>0)
+            left=dp[i][j-1] ;
+           if(i>0)
+            up= dp[i-1][j];
+           dp[i][j]=(left + up)%M;
+        }
+    }
+
+    cout<<(dp[n-1][n-1])%M;
 }
