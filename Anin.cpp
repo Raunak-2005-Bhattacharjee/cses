@@ -2,51 +2,36 @@
 using namespace std;
 using ll = long long;
 
-int main()
-{
+int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
-    ll n, k;
-    cin >> n >> k;
-    vector<ll> arr(n);
-    for (ll i = 0; i < n; i++)
-    {
-        cin >> arr[i];
-    }
-    map<ll, ll> mp;
-    ll l = 0;
-    ll r = 0;
-    ll ans = 0;
-    while (r < n)
-    {
-        if (mp.find(arr[r]) == mp.end())
-        {
-            mp[arr[r]]++;
-            ans += (r - l + 1);
-            r++;
+        ll n, k;
+        cin >> n >> k;
+        vector<pair<ll,ll>>v(n);
+        for(ll i=0; i<n; i++){
+            cin>>v[i].first>>v[i].second;
         }
-        else
-        {
+        sort(v.begin(),v.end());
+        multiset<ll>et;
+        for(ll i=0; i<k; i++){
+            et.insert(v[i].second);
 
-            if (mp[arr[r]] <= k)
-            {
-                mp[arr[r]]++;
-                while (mp[arr[r]] > k)
-                {
-                    if (arr[l] == arr[r])
-                    {
-                        mp[arr[r]]--;
-                    }
-                    l++;
-                }
+        }
+        ll cnt=k;
+        for(ll i=k; i<n; i++){
+            auto max = et.rbegin();
+            auto min = et.begin();
+            if(v[i].first>=*(min)){
+                cnt++;
+                et.insert(v[i].second);
+                et.erase(min);
+
             }
-            else
-            {
-
-                ans += (r - l + 1);
-                r++;
+            else if(v[i].second< *(max)){
+                et.erase(et.find(*max));
+                et.insert(v[i].second);
             }
         }
+
+        cout<<cnt;
     }
-    cout << ans;
-}
