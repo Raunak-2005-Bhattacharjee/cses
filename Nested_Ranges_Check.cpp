@@ -1,49 +1,52 @@
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
-using vl = vector<ll>;
-using vvl = vector<vl>;
-using pll = pair<ll,ll>;
-#define all(x) (x).begin(), (x).end()
-#define rep(i,a,b) for(ll i=a;i<b;i++)
-#define inputarr(arr) for(auto &x: arr) cin>>x;
-#define printarr(arr) for(auto &x: arr) cout<<x<<" "; cout<<endl;
 
-bool compare(pll a, pll b){
-    if(a.first==b.first)
-        return a.second>b.second;
-    return a.first<b.first;
+bool compare(vector<ll> a, vector<ll> b){
+    if(a[0]==b[0])
+        return a[1]>b[1];
+    return a[0]<b[0];
 }
 
 int main()
 {
     ll n;
     cin>>n;
-    vector<pll> range(n);
-    rep(i,0,n)
-        cin>>range[i].first>>range[i].second;
-    vector<pll> temp;
-    temp=range;
-    sort(all(temp), compare);
-    vl contains(n,0), contained(n,0);
+    vector<vector<ll>> range(n, vector<ll>(3));
     for(ll i=0; i<n; i++){
-        ll l = range[i].first;
-        ll r = range[i].second;
-        ll pos = (lower_bound(all(temp), pll(l,0)) - temp.begin());
-        for(ll j=n-1; j>pos; j--){
-            if(temp[j].second <= r){
-                contains[i]=1;
-                break;
-            }
-        }
-        for(ll j=0; j<n && temp[j].first<=l; j++){
-            if(j!=pos && temp[j].second>=r){
-                contained[i]=1;
-                break;
-            }
-        }
+        ll a,b;
+        cin>>a>>b;
+        range[i][0]=a;
+        range[i][1]=b;
+        range[i][2]=i;
     }
-    printarr(contains);
-    printarr(contained);
+    sort(range.begin(), range.end(), compare);
+    vector<ll> contains(n,0), contained(n,0);
+    
+    ll premax=LLONG_MIN;
+    for(ll i=0; i<n; i++){
+        ll idx=range[i][2];
+        if(premax!= LLONG_MIN && premax >= range[i][1]){
+            contained[idx]=1;
+        }
+        premax= max(premax, range[i][1]);
+    }
+
+    ll postmin=LLONG_MAX;
+    for(ll i=n-1; i>=0; i--){
+        ll idx= range[i][2];
+        if(postmin!= LLONG_MAX && postmin <= range[i][1]){
+            contains[idx]=1;
+        }
+        postmin= min(postmin, range[i][1]);
+    }
+    for(ll i=0; i<n; i++){
+        cout<<contains[i] <<" ";
+    }
+    cout<<endl;
+    for(ll i=0; i<n; i++){
+        cout<<contained[i] <<" ";
+    }
+    cout<<endl;
     return 0;
 }

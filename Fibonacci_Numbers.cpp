@@ -2,10 +2,16 @@
 using namespace std;
 using ll = long long;
 using vl = vector<ll>;
+using vvl = vector<vl>;
+using pll = pair<ll,ll>;
+#define all(x) (x).begin(), (x).end()
+#define rep(i,a,b) for(ll i=a;i<b;i++)
+#define inputarr(arr) for(auto &x: arr) cin>>x;
+#define printarr(arr) for(auto &x: arr) cout<<x<<" "; cout<<endl;
 const int mod = 1e9+7;
 
 
-void multiply(vector<vector<int>> &mat1, vector<vector<int>> &mat2){
+void multiply(vvl &mat1, vvl &mat2){
     ll a= (mat1[0][0]*mat2[0][0] + mat1[0][1]*mat2[1][0])%mod;
     ll b= (mat1[0][0]*mat2[0][1] + mat1[0][1]*mat2[1][1])%mod;
     ll c= (mat1[1][0]*mat2[0][0] + mat1[1][1]*mat2[1][0])%mod;
@@ -17,10 +23,10 @@ void multiply(vector<vector<int>> &mat1, vector<vector<int>> &mat2){
 }
     
 
-void matrixpow(vector<vector<int>> &mat1, ll n){
+void matrixpow(vvl &mat1, ll n){
     if(n==0 || n==1)
         return;
-    vector<vector<int>> mat = {{1,1},{1,0}};
+    vvl mat = {{1,1},{1,0}};
     matrixpow(mat1, n/2);
     multiply(mat1, mat1);
     if(n%2 != 0)
@@ -31,7 +37,7 @@ int main()
 {
     ll n;
     cin>>n;
-    vector<vector<int>> mat1 = {{1,1},{1,0}};
+    vvl mat1 = {{1,1},{1,0}};
     if(n==0 || n==1){
         cout<<n<<endl;
         return 0;
