@@ -32,7 +32,7 @@ int main()
     vl prev(x+1), curr(x+1);
     // ll ans= f(n, x, n, x, books, dp);
     // cout<<ans<<endl;
-
+    
     for(ll i=1; i<=n; i++){
         for(ll money=0; money<=x; money++){
             ll nottake= prev[money];
