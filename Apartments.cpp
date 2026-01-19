@@ -10,20 +10,23 @@ using pll = pair<ll,ll>;
 #define printarr(arr) for(auto &x: arr) cout<<x<<" "; cout<<endl;
 int main()
 {
-    ll n;
-    cin>>n;
-    vl arr(n);
-    inputarr(arr);
-    vl temp;
-    temp.push_back(arr[0]);
-    rep(i,1,n){
-        if(arr[i]>temp.back())
-            temp.push_back(arr[i]);
+    ll n,m,k;
+    cin>>n>>m>>k;
+    vl a(n),b(m);
+    inputarr(a);
+    inputarr(b);
+    sort(all(a));
+    sort(all(b));
+    ll i=0,j=0,count=0;
+    while(i<n && j<m){
+        if(b[j]+k < a[i]) j++;
+        else if(b[j]-k > a[i]) i++;
         else{
-            ll ind= lower_bound(all(temp),arr[i])-temp.begin();
-            temp[ind]=arr[i];
+            count++;
+            i++;
+            j++;
         }
     }
-    cout<<temp.size()<<endl;
+    cout<<count<<endl;
     return 0;
 }
